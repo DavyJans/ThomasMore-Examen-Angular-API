@@ -7,6 +7,7 @@ using AngularAPI.Models;
 using AngularAPI.Services;
 using AngularAPI.Entities;
 
+
 [ApiController]
 [Route("[controller]")]
 public class UsersController : ControllerBase
@@ -38,6 +39,19 @@ public class UsersController : ControllerBase
             return BadRequest(new { message = "Error during registration" });
 
         return Ok(response);
+    }
+
+    [Authorize]
+    [HttpPut("update")]
+    public IActionResult Update(User user)
+    {
+        var response = _userService.UpdateUser(user);
+
+        if (response == null)
+            return BadRequest(new { message = "Error during update operation" });
+
+        return Ok($"User {user.UserName} successfully updated");
+
     }
 
     [Authorize]

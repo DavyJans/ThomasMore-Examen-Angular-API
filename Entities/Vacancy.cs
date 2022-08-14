@@ -1,4 +1,6 @@
-﻿namespace AngularAPI.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace AngularAPI.Entities;
 
 public class Vacancy
 {
@@ -11,10 +13,9 @@ public class Vacancy
     public string OtherContent { get; set; }
     public string PublishDate { get; set; }
     public string Editor { get; set; }
+    public string Author { get; set; }
 
     public int CompanyId { get; set; }
-    public int AuthorId { get; set; }
-
-    public string Author { get; set; }
-    public Company Company { get; set; }
+    
+    public virtual Company? Company { get; set; }
 }

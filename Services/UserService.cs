@@ -16,6 +16,8 @@ public interface IUsersService
     AuthenticateResponse Register(RegistrationRequest model);
     IEnumerable<User> GetAll();
     User GetById(int id);
+
+    User UpdateUser(User user);
 }
 
 public class UserService : IUsersService
@@ -77,6 +79,20 @@ public class UserService : IUsersService
     public User GetById(int id)
     {
         return dataContext.Users.FirstOrDefault(x => x.Id == id);
+    }
+
+    public User UpdateUser(User user)
+    {
+        if (user == null) return null;
+
+        dataContext.Users.Update(user);
+
+        var result = dataContext.SaveChanges();
+
+        if (result <= 0) return null;
+
+        return user;
+
     }
 
     // helper methods

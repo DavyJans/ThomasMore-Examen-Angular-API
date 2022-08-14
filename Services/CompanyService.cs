@@ -14,7 +14,14 @@ public interface ICompanyService
 {
     IEnumerable<Company> GetAll();
     Company GetById(int id);
+
+    Company AddCompany(Company company);
+
+    Company UpdateCompany(Company company);
+
+    bool DeleteCompany(Company company);
 }
+
 
 public class CompanyService : ICompanyService
 {
@@ -27,7 +34,7 @@ public class CompanyService : ICompanyService
         this.dataContext = dataContext;
     }
 
-
+    
     public IEnumerable<Company> GetAll()
     {
         return dataContext.Companies;
@@ -38,5 +45,41 @@ public class CompanyService : ICompanyService
         return dataContext.Companies.FirstOrDefault(x => x.Id == id);
     }
 
-   
+    public Company AddCompany(Company company)
+    {
+
+        dataContext.Companies.Add(company);
+        var result = dataContext.SaveChanges();
+
+        if (result <= 0) return null;
+
+        // return null if user not found
+        if (company == null) return null;
+
+
+        return company;
+    }
+
+    public bool DeleteCompany(Company company)
+    {
+        dataContext.Remove(company);
+        var success = dataContext.SaveChanges();
+
+        return success > 0;
+
+    }
+
+    public Company UpdateCompany(Company company)
+    {
+        if (company == null) return null;
+
+        dataContext.Companies.Update(company);
+
+        var result = dataContext.SaveChanges();
+
+        if (result <= 0) return null;
+
+        return company;
+
+    }
 }

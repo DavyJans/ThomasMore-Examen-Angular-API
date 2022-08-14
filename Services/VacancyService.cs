@@ -5,11 +5,17 @@ using AngularAPI.Entities;
 using AngularAPI.Helpers;
 using AngularAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using AngularAPI.Models;
 
 public interface IVacancyService
 {
     IEnumerable<Vacancy> GetAll();
     Vacancy GetById(int id);
+    Vacancy AddVacancy(Vacancy vacancy);
+
+    Vacancy UpdateVacancy(Vacancy vacancy);
+
+    bool DeleteVacancy(Vacancy vacancy);
 }
 
 public class VacancyService : IVacancyService
@@ -35,5 +41,41 @@ public class VacancyService : IVacancyService
         return dataContext.Vacancies.FirstOrDefault(x => x.Id == id);
     }
 
+    public Vacancy AddVacancy(Vacancy vacancy)
+    {
+        
+        dataContext.Vacancies.Add(vacancy);
+        var result = dataContext.SaveChanges();
 
+        if (result <= 0) return null;
+
+        // return null if user not found
+        if (vacancy == null) return null;
+
+     
+        return vacancy;
+    }
+
+    public bool DeleteVacancy(Vacancy vacancy)
+    {
+        dataContext.Remove(vacancy);
+        var success = dataContext.SaveChanges();
+
+        return success > 0;
+
+    }
+
+    public Vacancy UpdateVacancy(Vacancy vacancy)
+    {
+        if (vacancy == null) return null;
+
+        dataContext.Vacancies.Update(vacancy);
+
+        var result = dataContext.SaveChanges();
+
+        if (result <= 0) return null;
+
+        return vacancy;
+
+    }
 }
