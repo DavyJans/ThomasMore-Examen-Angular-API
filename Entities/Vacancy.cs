@@ -15,6 +15,10 @@ public class Vacancy
     public string Editor { get; set; }
     public string Author { get; set; }
 
+    public string ClosingDate { get; set; }
+
+    public string Location { get; set; }
+
     public int CompanyId { get; set; }
     
     public virtual Company? Company { get; set; }

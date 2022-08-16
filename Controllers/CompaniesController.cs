@@ -56,6 +56,13 @@ public class CompaniesController : ControllerBase
 
     }
 
+    [HttpGet("{id:int}")]
+    public IActionResult GetById(int id)
+    {
+        var company = companyService.GetById(id);
+        return Ok(company);
+    }
+
     [HttpGet]
     public IActionResult GetAll()
     {

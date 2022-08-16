@@ -9,6 +9,7 @@ using AngularAPI.Entities;
 using AngularAPI.Helpers;
 using AngularAPI.Models;
 using AngularAPI.Data;
+using Microsoft.EntityFrameworkCore;
 
 public interface ICompanyService
 {
@@ -42,7 +43,7 @@ public class CompanyService : ICompanyService
 
     public Company GetById(int id)
     {
-        return dataContext.Companies.FirstOrDefault(x => x.Id == id);
+        return dataContext.Companies.Include(x => x.Vacancies).FirstOrDefault(x => x.Id == id);
     }
 
     public Company AddCompany(Company company)

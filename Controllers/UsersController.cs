@@ -41,6 +41,17 @@ public class UsersController : ControllerBase
         return Ok(response);
     }
 
+    [HttpPost("apply")]
+    public IActionResult Apply(User user, int vacancyId)
+    {
+        var response = _userService.Apply(user, vacancyId);
+
+        if (response == null)
+            return BadRequest(new { message = "Error during application" });
+
+        return Ok(response);
+    }
+
     [Authorize]
     [HttpPut("update")]
     public IActionResult Update(User user)
@@ -52,6 +63,14 @@ public class UsersController : ControllerBase
 
         return Ok($"User {user.UserName} successfully updated");
 
+    }
+
+    [Authorize]
+    [HttpGet("{id:int}")]
+    public IActionResult GetById(int id)
+    {
+        var user = _userService.GetById(id);
+        return Ok(user);
     }
 
     [Authorize]

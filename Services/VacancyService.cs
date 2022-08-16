@@ -16,6 +16,8 @@ public interface IVacancyService
     Vacancy UpdateVacancy(Vacancy vacancy);
 
     bool DeleteVacancy(Vacancy vacancy);
+
+    IEnumerable<Vacancy> GetByCompanyId(int id);
 }
 
 public class VacancyService : IVacancyService
@@ -38,7 +40,12 @@ public class VacancyService : IVacancyService
 
     public Vacancy GetById(int id)
     {
-        return dataContext.Vacancies.FirstOrDefault(x => x.Id == id);
+        return dataContext.Vacancies.Include(x => x.Company).FirstOrDefault(x => x.Id == id);
+    }
+
+    public IEnumerable<Vacancy> GetByCompanyId(int id)
+    {
+        return dataContext.Vacancies.Include(x => x.Company).Where(x => x.CompanyId == id);
     }
 
     public Vacancy AddVacancy(Vacancy vacancy)

@@ -11,6 +11,8 @@ public class User
 
     public Role Role { get; set; }
 
+    public List<Application> Applications { get; set; }
+
     [JsonIgnore]
     public string Password { get; set; }
 }

@@ -55,7 +55,23 @@ public class VacanciesController : ControllerBase
 
     }
 
-        [HttpGet]
+
+    [HttpGet("{id:int}")]
+    public IActionResult GetById(int id)
+    {
+        var vacancy = vacancyService.GetById(id);
+        return Ok(vacancy);
+    }
+
+
+    [HttpGet("byCompanyId")]
+    public IActionResult getVacanciesByCompanyId(int id)
+    {
+        var vacancies = vacancyService.GetByCompanyId(id);
+        return Ok(vacancies);
+    }
+
+    [HttpGet]
     public IActionResult GetAll()
     {
         var vacancies = vacancyService.GetAll();
