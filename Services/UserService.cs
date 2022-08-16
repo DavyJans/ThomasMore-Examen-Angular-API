@@ -89,6 +89,12 @@ public class UserService : IUsersService
     {
         if (user == null) return null;
 
+        var local = dataContext.Users.FirstOrDefault( x=> x.Id == user.Id);
+        
+        user.Password ??= local.Password;
+
+        dataContext.Entry(local).State = EntityState.Detached;
+
         dataContext.Users.Update(user);
 
         var result = dataContext.SaveChanges();

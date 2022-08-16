@@ -51,7 +51,7 @@ public class UsersController : ControllerBase
         if (response == null)
             return BadRequest(new { message = "Error during update operation" });
 
-        return Ok($"User {user.UserName} successfully updated");
+        return Ok(response);
 
     }
 
