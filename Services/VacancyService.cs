@@ -18,6 +18,8 @@ public interface IVacancyService
     bool DeleteVacancy(Vacancy vacancy);
 
     IEnumerable<Vacancy> GetByCompanyId(int id);
+
+    User Apply(User user, int vacancyId);
 }
 
 public class VacancyService : IVacancyService
@@ -32,7 +34,29 @@ public class VacancyService : IVacancyService
         this.dataContext = dataContext;
     }
 
- 
+    public User Apply(User user, int vacancyId)
+    {
+        if (vacancyId == null || user.Id == null) return null;
+
+        Application application = new()
+        {
+            ApplicationDate = DateTime.Now.ToShortDateString(),
+            UserId = user.Id,
+            VacancyId = vacancyId
+
+        };
+
+        dataContext.Applications.Add(application);
+
+        var result = dataContext.SaveChanges();
+
+        if (result <= 0) return null;
+
+        return user;
+
+    }
+
+
     public IEnumerable<Vacancy> GetAll()
     {
         return dataContext.Vacancies.Include(x => x.Company);

@@ -41,16 +41,6 @@ public class UsersController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("apply")]
-    public IActionResult Apply(User user, int vacancyId)
-    {
-        var response = _userService.Apply(user, vacancyId);
-
-        if (response == null)
-            return BadRequest(new { message = "Error during application" });
-
-        return Ok(response);
-    }
 
     [Authorize]
     [HttpPut("update")]

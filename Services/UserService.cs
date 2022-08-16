@@ -20,7 +20,6 @@ public interface IUsersService
 
     User UpdateUser(User user);
 
-    User Apply(User user, int vacancyId);
 }
 
 public class UserService : IUsersService
@@ -84,27 +83,7 @@ public class UserService : IUsersService
         return dataContext.Users.Include(x => x.Applications).FirstOrDefault(x => x.Id == id);
     }
 
-    public User Apply(User user, int vacancyId)
-    {
-        if (vacancyId == null || user.Id == null) return null;
 
-        Application application = new()
-        {
-            ApplicationDate = DateTime.Now.ToShortDateString(),
-            UserId = user.Id,    
-            VacancyId = vacancyId
-            
-        };
-
-        dataContext.Applications.Add(application);
-        
-        var result = dataContext.SaveChanges();
-
-        if (result <= 0) return null;
-
-        return user;
-
-    }
 
     public User UpdateUser(User user)
     {

@@ -6,6 +6,7 @@ using AngularAPI.Helpers;
 using AngularAPI.Models;
 using AngularAPI.Services;
 using AngularAPI.Entities;
+using System.Text.Json;
 
 [ApiController]
 [Route("[controller]")]
@@ -20,9 +21,9 @@ public class VacanciesController : ControllerBase
 
     [Authorize]
     [HttpPost("add")]
-    public IActionResult Add(Vacancy vacacy)
+    public IActionResult Add(Vacancy vacancy)
     {
-        var response = vacancyService.AddVacancy(vacacy);
+        var response = vacancyService.AddVacancy(vacancy);
 
         if (response == null)
             return BadRequest(new { message = "Error during add operation" });
@@ -61,6 +62,24 @@ public class VacanciesController : ControllerBase
     {
         var vacancy = vacancyService.GetById(id);
         return Ok(vacancy);
+    }
+
+
+    [HttpPost("apply")]
+    public IActionResult Apply([FromBody] JsonElement body)
+    {
+        ApplicationRequest applicationRequest = JsonSerializer.Deserialize<ApplicationRequest>(body, new JsonSerializerOptions
+                                                                    {
+                                                                        PropertyNameCaseInsensitive = true
+                                                                    });
+     
+
+        var response = vacancyService.Apply(applicationRequest.user, applicationRequest.id);
+
+        if (response == null)
+            return BadRequest(new { message = "Error during application" });
+
+        return Ok(response);
     }
 
 
